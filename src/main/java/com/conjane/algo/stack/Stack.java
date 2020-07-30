@@ -58,4 +58,12 @@ public class Stack<E> {
         elementCount--;
         return element;
     }
+
+    /**
+     * 栈元素是否为空
+     * @return
+     */
+    public boolean isEmpty(){
+        return elementCount == 0;
+    }
 }
