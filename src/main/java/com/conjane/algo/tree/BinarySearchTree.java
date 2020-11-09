@@ -1,6 +1,10 @@
 package com.conjane.algo.tree;
 
+import com.conjane.algo.stack.Stack;
+
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class BinarySearchTree<E> {
 
@@ -42,7 +46,8 @@ public class BinarySearchTree<E> {
             } else if (compareResult < 0) {
                 tempNode = tempNode.leftNode;
             } else {
-                return;
+                // 新值覆盖旧值
+                tempNode.element = element;
             }
         }
         Node node = new Node(element);
@@ -63,6 +68,46 @@ public class BinarySearchTree<E> {
         return false;
     }
 
+    // 前序遍历：根 左 右
+    public void preOrder(Node<E> rootNode){
+        System.out.println(rootNode.element);
+        preOrder(rootNode.leftNode);
+        preOrder(rootNode.rightNode);
+    }
+
+    // 中序遍历：左 根 右
+    public void inOrder(Node<E> rootNode){
+        preOrder(rootNode.leftNode);
+        System.out.println(rootNode.element);
+        preOrder(rootNode.rightNode);
+    }
+
+    // 后序遍历：左 右 根
+    public void postOrder(Node<E> rootNode){
+        preOrder(rootNode.leftNode);
+        preOrder(rootNode.rightNode);
+        System.out.println(rootNode.element);
+    }
+
+    // 层序遍历
+    public void levelOrder(Node<E> rootNode){
+        if (rootNode == null){
+            return;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(rootNode);
+        while (!queue.isEmpty()){
+            System.out.println(queue.poll().element);
+            if (rootNode.leftNode != null){
+                queue.offer(rootNode.leftNode);
+            }
+            if (rootNode.rightNode != null){
+                queue.offer(rootNode.rightNode);
+            }
+        }
+    }
+
+    // 检查是否为null
     private void elementNotNullCheck(E element) {
         if (element == null) {
             throw new IllegalArgumentException("element must not be null");
