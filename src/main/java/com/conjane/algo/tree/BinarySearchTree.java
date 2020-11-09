@@ -1,7 +1,5 @@
 package com.conjane.algo.tree;
 
-import com.conjane.algo.stack.Stack;
-
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -14,7 +12,7 @@ public class BinarySearchTree<E> {
 
     private Comparator<E> comparator;
 
-    BinarySearchTree(Comparator comparator){
+    BinarySearchTree(Comparator comparator) {
         this.comparator = comparator;
     }
 
@@ -69,39 +67,60 @@ public class BinarySearchTree<E> {
     }
 
     // 前序遍历：根 左 右
-    public void preOrder(Node<E> rootNode){
+    public void preOrder(Node<E> rootNode) {
         System.out.println(rootNode.element);
         preOrder(rootNode.leftNode);
         preOrder(rootNode.rightNode);
+    }
+
+    // 带有遍历方式的前序遍历
+    public void preOrder(Node<E> rootNode, Visitor visitor) {
+        visitor.visit(rootNode.element);
+        preOrder(rootNode.leftNode, visitor);
+        preOrder(rootNode.rightNode, visitor);
     }
 
     // 中序遍历：左 根 右
-    public void inOrder(Node<E> rootNode){
+    public void inOrder(Node<E> rootNode) {
         preOrder(rootNode.leftNode);
         System.out.println(rootNode.element);
         preOrder(rootNode.rightNode);
+    }
+
+    // 带有遍历方式的中序遍历
+    public void inOrder(Node<E> rootNode,Visitor<E> visitor){
+        preOrder(rootNode.leftNode,visitor);
+        visitor.visit(rootNode.element);
+        preOrder(rootNode.rightNode,visitor);
     }
 
     // 后序遍历：左 右 根
-    public void postOrder(Node<E> rootNode){
+    public void postOrder(Node<E> rootNode) {
         preOrder(rootNode.leftNode);
         preOrder(rootNode.rightNode);
         System.out.println(rootNode.element);
     }
 
+    // 带有遍历方式的后序遍历
+    public void postOrder(Node<E> rootNode,Visitor<E> visitor){
+        postOrder(rootNode.leftNode,visitor);
+        postOrder(rootNode.rightNode,visitor);
+        visitor.visit(rootNode.element);
+    }
+
     // 层序遍历
-    public void levelOrder(Node<E> rootNode){
-        if (rootNode == null){
+    public void levelOrder(Node<E> rootNode) {
+        if (rootNode == null) {
             return;
         }
         Queue<Node> queue = new LinkedList<>();
         queue.offer(rootNode);
-        while (!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             System.out.println(queue.poll().element);
-            if (rootNode.leftNode != null){
+            if (rootNode.leftNode != null) {
                 queue.offer(rootNode.leftNode);
             }
-            if (rootNode.rightNode != null){
+            if (rootNode.rightNode != null) {
                 queue.offer(rootNode.rightNode);
             }
         }
@@ -116,10 +135,10 @@ public class BinarySearchTree<E> {
 
     // 比较e1，e2两个值大小
     private int compare(E e1, E e2) {
-        if (comparator != null){
-            return comparator.compare(e1,e2);
+        if (comparator != null) {
+            return comparator.compare(e1, e2);
         }
-        return ((Comparable)e1).compareTo(e2);
+        return ((Comparable) e1).compareTo(e2);
     }
 
     static class Node<E> {
@@ -130,5 +149,9 @@ public class BinarySearchTree<E> {
         public Node(E element) {
             this.element = element;
         }
+    }
+
+    public interface Visitor<E> {
+        void visit(E element);
     }
 }
