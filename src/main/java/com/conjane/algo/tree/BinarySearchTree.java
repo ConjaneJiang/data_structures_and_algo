@@ -88,10 +88,10 @@ public class BinarySearchTree<E> {
     }
 
     // 带有遍历方式的中序遍历
-    public void inOrder(Node<E> rootNode,Visitor<E> visitor){
-        preOrder(rootNode.leftNode,visitor);
+    public void inOrder(Node<E> rootNode, Visitor<E> visitor) {
+        preOrder(rootNode.leftNode, visitor);
         visitor.visit(rootNode.element);
-        preOrder(rootNode.rightNode,visitor);
+        preOrder(rootNode.rightNode, visitor);
     }
 
     // 后序遍历：左 右 根
@@ -102,9 +102,9 @@ public class BinarySearchTree<E> {
     }
 
     // 带有遍历方式的后序遍历
-    public void postOrder(Node<E> rootNode,Visitor<E> visitor){
-        postOrder(rootNode.leftNode,visitor);
-        postOrder(rootNode.rightNode,visitor);
+    public void postOrder(Node<E> rootNode, Visitor<E> visitor) {
+        postOrder(rootNode.leftNode, visitor);
+        postOrder(rootNode.rightNode, visitor);
         visitor.visit(rootNode.element);
     }
 
@@ -114,16 +114,54 @@ public class BinarySearchTree<E> {
             return;
         }
         Queue<Node> queue = new LinkedList<>();
+        // 首先根节点入队
         queue.offer(rootNode);
+        // 循环检测队中是否存在元素
         while (!queue.isEmpty()) {
             System.out.println(queue.poll().element);
+            // 检查左节点是否存在，存在则入队
             if (rootNode.leftNode != null) {
                 queue.offer(rootNode.leftNode);
             }
+            // 检查右节点是否存在，存在则入队
             if (rootNode.rightNode != null) {
                 queue.offer(rootNode.rightNode);
             }
         }
+    }
+
+    // 求二叉树高度
+    public int height() {
+        return height(this.rootNode);
+    }
+
+    // 递归方式求二叉树高度
+//    private int height(Node node) {
+//        if (node == null) return 0;
+//        return Math.max(height(node.leftNode), height(node.rightNode));
+//    }
+
+    // 层序遍历方式求二叉树高度
+    private int height(Node node){
+        LinkedList<Node> queue = new LinkedList();
+        queue.offer(node);
+        int size = 1;
+        int height = 0;
+        while(!queue.isEmpty()){
+            queue.poll();
+            size = size - 1;
+            if (node.leftNode != null){
+                queue.offer(node.leftNode);
+            }
+            if (node.rightNode != null){
+                queue.offer(node.rightNode);
+            }
+            if (size == 0){
+                size = queue.size();
+                height = height + 1;
+            }
+        }
+        return height;
     }
 
     // 检查是否为null
