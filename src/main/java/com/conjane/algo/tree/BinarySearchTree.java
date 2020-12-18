@@ -88,6 +88,7 @@ public class BinarySearchTree<E> {
     }
 
     // 带有遍历方式的中序遍历
+
     public void inOrder(Node<E> rootNode, Visitor<E> visitor) {
         preOrder(rootNode.leftNode, visitor);
         visitor.visit(rootNode.element);
