@@ -118,14 +118,15 @@ public class BinarySearchTree<E> {
         queue.offer(rootNode);
         // 循环检测队中是否存在元素
         while (!queue.isEmpty()) {
-            System.out.println(queue.poll().element);
+            Node node = queue.poll();
+            System.out.println(node.element);
             // 检查左节点是否存在，存在则入队
-            if (rootNode.leftNode != null) {
-                queue.offer(rootNode.leftNode);
+            if (node.leftNode != null) {
+                queue.offer(node.leftNode);
             }
             // 检查右节点是否存在，存在则入队
-            if (rootNode.rightNode != null) {
-                queue.offer(rootNode.rightNode);
+            if (node.rightNode != null) {
+                queue.offer(node.rightNode);
             }
         }
     }
@@ -162,6 +163,35 @@ public class BinarySearchTree<E> {
             }
         }
         return height;
+    }
+
+    // 是否是完全二叉树
+    public boolean isComplete(){
+        if (rootNode == null) return false;
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(rootNode);
+
+        boolean mustBeLeaf = false;
+
+        while (!queue.isEmpty()){
+            Node node = queue.poll();
+            // 节点必须是叶子结点，但是该节点又不是叶子节点，则不是完全二叉树
+            if (mustBeLeaf && (node.rightNode != null || node.leftNode != null)){
+                return false;
+            }
+            // 如果左节点，右节点不为空，则入队
+            if (rootNode.leftNode != null && rootNode.rightNode != null){
+                queue.offer(rootNode.leftNode);
+                queue.offer(rootNode.rightNode);
+                // 如果左节点为空，右节点不为空，则一定不为完全二叉树
+            }else if (rootNode.leftNode == null && rootNode.rightNode != null){
+                return false;
+                // 剩下来的情况，就是节点必须为叶子节点，要不然就不是完全二叉树
+            }else {
+                mustBeLeaf = true;
+            }
+        }
+        return true;
     }
 
     // 检查是否为null
