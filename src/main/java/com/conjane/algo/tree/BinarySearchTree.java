@@ -181,18 +181,36 @@ public class BinarySearchTree<E> {
                 return false;
             }
             // 如果左节点，右节点不为空，则入队
-            if (rootNode.leftNode != null && rootNode.rightNode != null){
-                queue.offer(rootNode.leftNode);
-                queue.offer(rootNode.rightNode);
-                // 如果左节点为空，右节点不为空，则一定不为完全二叉树
-            }else if (rootNode.leftNode == null && rootNode.rightNode != null){
+            if (node.leftNode != null) {
+                queue.offer(node.leftNode);
+            }else if(node.rightNode != null){
                 return false;
-                // 剩下来的情况，就是节点必须为叶子节点，要不然就不是完全二叉树
+            }
+
+            if (node.rightNode != null){
+                queue.offer(rootNode.rightNode);
             }else {
-                mustBeLeaf = true;
+                mustBeLeaf = false;
             }
         }
         return true;
+    }
+
+    // 翻转二叉树
+    public Node reverse(){
+        return reverse(rootNode);
+    }
+
+    private Node reverse(Node rootNode){
+        if (rootNode == null) return rootNode;
+
+        Node tempNode = rootNode.leftNode;
+        rootNode.leftNode = rootNode.rightNode;
+        rootNode.rightNode = tempNode;
+
+        reverse(rootNode.leftNode);
+        reverse(rootNode.rightNode);
+        return rootNode;
     }
 
     // 检查是否为null
